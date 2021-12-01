@@ -1,4 +1,4 @@
-package bitcoin
+package encoding
 
 import (
 	"bytes"
@@ -10,9 +10,9 @@ func TestBase58CheckEncode(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name    string
-		data    string
-		encoded string
+		name string
+		data string
+		want string
 	}{
 		{
 			"case one",
@@ -38,9 +38,9 @@ func TestBase58CheckEncode(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			res := Base58CheckEncode(data)
-			if res != tt.encoded {
-				t.Fatalf("strings mismatch: %s != %s", res, tt.encoded)
+			got := Base58CheckEncode(data)
+			if tt.want != got {
+				t.Fatalf("result mismatch: %s != %s", tt.want, got)
 			}
 		})
 	}
@@ -50,9 +50,9 @@ func TestBase58CheckDecode(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name    string
-		data    string
-		decoded string
+		name string
+		data string
+		want string
 	}{
 		{
 			"case one",
@@ -73,18 +73,18 @@ func TestBase58CheckDecode(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			decoded, err := hex.DecodeString(tt.decoded)
+			want, err := hex.DecodeString(tt.want)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			res, err := Base58CheckDecode(tt.data)
+			got, err := Base58CheckDecode(tt.data)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			if !bytes.Equal(res, decoded) {
-				t.Fatalf("bytes mismatch: %x != %s", res, tt.decoded)
+			if !bytes.Equal(want, got) {
+				t.Fatalf("result mismatch: %s != %x", tt.want, got)
 			}
 		})
 	}

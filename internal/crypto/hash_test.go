@@ -10,9 +10,9 @@ func TestHash160(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name   string
-		data   []byte
-		digest string
+		name string
+		data []byte
+		want string
 	}{
 		{
 			"empty data",
@@ -33,19 +33,19 @@ func TestHash160(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			digest, err := hex.DecodeString(tt.digest)
+			want, err := hex.DecodeString(tt.want)
 			if err != nil {
 				t.Fatal(err)
 
 			}
 
-			res := Hash160(tt.data)
-			if len(res) != 20 {
-				t.Fatalf("invalid digest length: %d", len(res))
+			got := Hash160(tt.data)
+			if len(got) != 20 {
+				t.Fatalf("invalid result length: %d", len(got))
 			}
 
-			if !bytes.Equal(res, digest) {
-				t.Fatalf("digests mismatch: %x != %x", digest, res)
+			if !bytes.Equal(want, got) {
+				t.Fatalf("result mismatch: %x != %x", want, got)
 			}
 		})
 	}
@@ -55,9 +55,9 @@ func TestHash256(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name   string
-		data   []byte
-		digest string
+		name string
+		data []byte
+		want string
 	}{
 		{
 			"empty data",
@@ -78,18 +78,18 @@ func TestHash256(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			digest, err := hex.DecodeString(tt.digest)
+			want, err := hex.DecodeString(tt.want)
 			if err != nil {
 				t.Fatal(err)
 			}
 
-			res := Hash256(tt.data)
-			if len(res) != 32 {
-				t.Fatalf("invalid digest length: %d", len(res))
+			got := Hash256(tt.data)
+			if len(got) != 32 {
+				t.Fatalf("invalid result length: %d", len(got))
 			}
 
-			if !bytes.Equal(res, digest) {
-				t.Fatalf("digests mismatch: %x != %x", digest, res)
+			if !bytes.Equal(want, got) {
+				t.Fatalf("result mismatch: %x != %x", want, got)
 			}
 		})
 	}
