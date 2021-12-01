@@ -10,7 +10,18 @@ import (
 	"github.com/piwtach/blockchain/internal/encoding"
 )
 
-const base58Symbols = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+type AddressVersion byte
+
+const (
+	AddressVersionPublicKeyHash AddressVersion = 0x00
+	AddressVersionScriptHash    AddressVersion = 0x05
+)
+
+const (
+	base58Symbols = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+
+	checksumSize = 4 // in bytes
+)
 
 var (
 	num58               = big.NewInt(58)
@@ -24,19 +35,22 @@ func init() {
 }
 
 // Base58CheckEncode encodes a byte array into a Bitcoin address.
-func Base58CheckEncode(data []byte) string {
-	csum := crypto.Hash256(data)[:4]
-	dataCsum := bytes.Join([][]byte{data, csum}, nil)
+func Base58CheckEncode(payload []byte, version AddressVersion) string {
+	ver := []byte{byte(version)}
+	verPayload := bytes.Join([][]byte{ver, payload}, nil)
+
+	csum := crypto.Hash256(verPayload)[:checksumSize]
+	bs := bytes.Join([][]byte{verPayload, csum}, nil)
 
 	var cnt int
-	for _, d := range dataCsum {
-		if d != 0x00 {
+	for _, b := range bs {
+		if b != byte(AddressVersionPublicKeyHash) {
 			break
 		}
 		cnt++
 	}
 
-	encoded := base58Encode(dataCsum[cnt:])
+	encoded := base58Encode(bs[cnt:])
 	return strings.Repeat("1", cnt) + reverseStr(encoded)
 }
 
@@ -63,17 +77,16 @@ func reverseStr(str string) string {
 
 // Base58CheckDecode decodes a Bitcoin address into a byte array.
 func Base58CheckDecode(addr string) ([]byte, error) {
-	const csumSize = 4
-
 	decoded, err := base58Decode(addr)
 	if err != nil {
 		return nil, err
 	}
-	csumStartIdx := len(decoded) - csumSize
-	data := decoded[:csumStartIdx]
+
+	csumStartIdx := len(decoded) - checksumSize
+	verPayload := decoded[:csumStartIdx]
 
 	expCsum := decoded[csumStartIdx:]
-	actCsum := crypto.Hash256(data)[:csumSize]
+	actCsum := crypto.Hash256(verPayload)[:checksumSize]
 	if !bytes.Equal(expCsum, actCsum) {
 		return nil, errors.New("base58check: bad checksum")
 	}
@@ -82,17 +95,16 @@ func Base58CheckDecode(addr string) ([]byte, error) {
 }
 
 func base58Decode(addr string) ([]byte, error) {
-	const addrSize = 25
 	num := new(big.Int)
 
-	for _, c := range addr {
+	for _, a := range addr {
 		num.Mul(num, num58)
-		if idx, ok := base58SymbolToIndex[c]; ok {
+		if idx, ok := base58SymbolToIndex[a]; ok {
 			num.Add(num, big.NewInt(int64(idx)))
 		}
 	}
 
-	bs, err := encoding.IntToBytes(num, addrSize, encoding.BigEndian)
+	bs, err := encoding.IntToBytes(num, 25, encoding.BigEndian)
 	if err != nil {
 		return nil, err
 	}
