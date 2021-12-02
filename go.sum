@@ -1,3 +1,5 @@
+github.com/piwatch/kit v0.0.0-20211202224641-8433919a957c h1:CMDwsE4vP0+9z3GIutWH5uJuclF9wzqCJulKn8f7KZI=
+github.com/piwatch/kit v0.0.0-20211202224641-8433919a957c/go.mod h1:uGsChltQm6BANzNEmvn88fOqxUkvmBjpVqTykikGEH8=
 golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871 h1:/pEO3GD/ABYAjuakUS6xSEmmlyVS4kxBNkeA9tLJiTI=
 golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=

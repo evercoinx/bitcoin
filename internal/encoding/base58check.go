@@ -6,8 +6,8 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/piwtach/blockchain/internal/crypto"
-	"github.com/piwtach/blockchain/internal/encoding"
+	"github.com/piwatch/bitcoin/internal/hash"
+	"github.com/piwatch/kit/encoding"
 )
 
 type AddressVersion byte
@@ -39,7 +39,7 @@ func Base58CheckEncode(payload []byte, version AddressVersion) string {
 	ver := []byte{byte(version)}
 	verPayload := bytes.Join([][]byte{ver, payload}, nil)
 
-	csum := crypto.Hash256(verPayload)[:checksumSize]
+	csum := hash.Hash256(verPayload)[:checksumSize]
 	bs := bytes.Join([][]byte{verPayload, csum}, nil)
 
 	var cnt int
@@ -86,7 +86,7 @@ func Base58CheckDecode(addr string) ([]byte, error) {
 	verPayload := decoded[:csumStartIdx]
 
 	expCsum := decoded[csumStartIdx:]
-	actCsum := crypto.Hash256(verPayload)[:checksumSize]
+	actCsum := hash.Hash256(verPayload)[:checksumSize]
 	if !bytes.Equal(expCsum, actCsum) {
 		return nil, errors.New("base58check: bad checksum")
 	}
