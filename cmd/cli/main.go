@@ -13,8 +13,8 @@ func main() {
 	app := &cli.App{
 		Name:     "bitcoin",
 		Usage:    "toolkit for operations with bitcoin blockchain",
-		Flags:    flags.New(),
 		Commands: commands.New(),
+		Flags:    flags.New(),
 	}
 
 	if err := app.Run(os.Args); err != nil {
