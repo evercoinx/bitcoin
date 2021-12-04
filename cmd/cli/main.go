@@ -11,10 +11,11 @@ import (
 
 func main() {
 	app := &cli.App{
-		Name:     "bitcoin",
-		Usage:    "toolkit for operations with bitcoin blockchain",
-		Commands: commands.New(),
-		Flags:    flags.New(),
+		Name:                   "bitcoin",
+		Usage:                  "toolkit for operations with bitcoin blockchain",
+		Commands:               commands.New(),
+		Flags:                  flags.New(),
+		UseShortOptionHandling: true,
 	}
 
 	if err := app.Run(os.Args); err != nil {

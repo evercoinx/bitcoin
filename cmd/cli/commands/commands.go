@@ -11,29 +11,41 @@ import (
 func New() []*cli.Command {
 	return []*cli.Command{
 		{
-			Name:    "convert",
-			Aliases: []string{"c"},
-			Usage:   "converts hash of public key or script to bitcoin address",
-			Action:  convert,
-			Flags: []cli.Flag{
-				&cli.StringFlag{
-					Name:    "address-type",
-					Aliases: []string{"a"},
-					Value:   "p2pkh",
-					Usage:   "address type: p2pkh or p2sh",
+			Name:    "address",
+			Aliases: []string{"a"},
+			Subcommands: []*cli.Command{
+				{
+					Name:    "encode",
+					Aliases: []string{"e"},
+					Usage:   "encode hash of public key or script to bitcoin address",
+					Action:  encodeHashToAddress,
+					Flags: []cli.Flag{
+						&cli.StringFlag{
+							Name:    "address-type",
+							Aliases: []string{"t"},
+							Value:   "p2pkh",
+							Usage:   "address type: p2pkh or p2sh",
+						},
+					},
+				},
+				{
+					Name:    "decode",
+					Aliases: []string{"d"},
+					Usage:   "decode bitcoin address to hash of public key or script",
+					Action:  decodeAddressToHash,
 				},
 			},
 		},
 	}
 }
 
-func convert(ctx *cli.Context) error {
-	publicKeyHash := ctx.Args().First()
-	if len(publicKeyHash) != 40 {
-		return fmt.Errorf("invalid hash is specified: %s", publicKeyHash)
+func encodeHashToAddress(ctx *cli.Context) error {
+	hash := ctx.Args().First()
+	if len(hash) != 40 {
+		return fmt.Errorf("invalid hash is specified: %s", hash)
 	}
 
-	payload, err := hex.DecodeString(publicKeyHash)
+	payload, err := hex.DecodeString(hash)
 	if err != nil {
 		return fmt.Errorf("unable to decode hash.\ncause: %w", err)
 	}
@@ -49,6 +61,21 @@ func convert(ctx *cli.Context) error {
 	}
 
 	addr := encoding.Base58CheckEncode(payload, ver)
-	fmt.Printf("bitcoin address: %s\n", addr)
+	fmt.Printf("address: %s\n", addr)
+	return nil
+}
+
+func decodeAddressToHash(ctx *cli.Context) error {
+	addr := ctx.Args().First()
+	if len(addr) < 14 || len(addr) > 74 {
+		return fmt.Errorf("invalid address is specified: %s", addr)
+	}
+
+	hash, err := encoding.Base58CheckDecode(addr)
+	if err != nil {
+		return fmt.Errorf("unable to decode address.\ncause: %w", err)
+	}
+
+	fmt.Printf("hash: %x\n", hash)
 	return nil
 }
