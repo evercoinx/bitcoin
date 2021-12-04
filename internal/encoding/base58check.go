@@ -6,8 +6,8 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/piwatch/bitcoin/internal/hash"
-	"github.com/piwatch/kit/encoding"
+	"github.com/evercoinx/bitcoin/internal/hash"
+	"github.com/evercoinx/kit/encoding"
 )
 
 type AddressVersion byte
