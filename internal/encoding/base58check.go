@@ -17,10 +17,15 @@ const (
 	AddressVersionScriptHash    AddressVersion = 0x05
 )
 
+func (v AddressVersion) String() string {
+	return string(v)
+}
+
 const (
 	base58Symbols = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
 
-	checksumSize = 4 // in bytes
+	addressSize  = 25 // in bytes; 1B is a version, 20B is a payload, 4B is a checksum
+	checksumSize = 4  // in bytes
 )
 
 var (
@@ -34,7 +39,7 @@ func init() {
 	}
 }
 
-// Base58CheckEncode encodes a byte array into a Bitcoin address.
+// Base58CheckEncode encodes a byte slice into a Bitcoin address.
 func Base58CheckEncode(payload []byte, version AddressVersion) string {
 	ver := []byte{byte(version)}
 	verPayload := bytes.Join([][]byte{ver, payload}, nil)
@@ -75,7 +80,7 @@ func reverseStr(str string) string {
 	return string(out)
 }
 
-// Base58CheckDecode decodes a Bitcoin address into a byte array.
+// Base58CheckDecode decodes a Bitcoin address into a byte slice.
 func Base58CheckDecode(addr string) ([]byte, error) {
 	decoded, err := base58Decode(addr)
 	if err != nil {
@@ -104,7 +109,7 @@ func base58Decode(addr string) ([]byte, error) {
 		}
 	}
 
-	bs, err := encoding.IntToBytes(num, 25, encoding.BigEndian)
+	bs, err := encoding.IntToBytes(num, addressSize, encoding.BigEndian)
 	if err != nil {
 		return nil, err
 	}

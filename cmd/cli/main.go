@@ -1,7 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/evercoinx/bitcoin/cmd/cli/commands"
+	"github.com/evercoinx/bitcoin/cmd/cli/flags"
+	"github.com/urfave/cli/v2"
+)
 
 func main() {
-	fmt.Println("Hello, world!")
+	app := &cli.App{
+		Name:     "bitcoin",
+		Usage:    "toolkit for operations with bitcoin blockchain",
+		Flags:    flags.New(),
+		Commands: commands.New(),
+	}
+
+	if err := app.Run(os.Args); err != nil {
+		fmt.Printf("error: %s\n", err)
+		os.Exit(1)
+	}
 }
