@@ -8,7 +8,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func New() []*cli.Command {
+func GetCommands() []*cli.Command {
 	return []*cli.Command{
 		{
 			Name:    "address",
