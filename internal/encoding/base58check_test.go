@@ -36,14 +36,14 @@ func TestBase58CheckEncode(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			ver := AddressVersionPublicKeyHash
+			version := AddressVersionPublicKeyHash
 			if tt.version == AddressVersionScriptHash {
-				ver = AddressVersionScriptHash
+				version = AddressVersionScriptHash
 			}
 
-			got := Base58CheckEncode(payload, ver)
-			if tt.want != got {
-				t.Fatalf("result mismatch: %s != %s", tt.want, got)
+			got := Base58CheckEncode(payload, version)
+			if got != tt.want {
+				t.Fatalf("%s != %s", got, tt.want)
 			}
 		})
 	}
@@ -81,8 +81,8 @@ func TestBase58CheckDecode(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			if !bytes.Equal(want, got) {
-				t.Fatalf("result mismatch: %s != %x", tt.want, got)
+			if !bytes.Equal(got, want) {
+				t.Fatalf("%x != %x", got, tt.want)
 			}
 		})
 	}

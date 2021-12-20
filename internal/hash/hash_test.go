@@ -40,12 +40,8 @@ func TestHash160(t *testing.T) {
 			}
 
 			got := Hash160(tt.data)
-			if len(got) != 20 {
-				t.Fatalf("invalid result length: %d", len(got))
-			}
-
-			if !bytes.Equal(want, got) {
-				t.Fatalf("result mismatch: %x != %x", want, got)
+			if !bytes.Equal(got, want) {
+				t.Fatalf("%x != %x", got, want)
 			}
 		})
 	}
@@ -84,12 +80,8 @@ func TestHash256(t *testing.T) {
 			}
 
 			got := Hash256(tt.data)
-			if len(got) != 32 {
-				t.Fatalf("invalid result length: %d", len(got))
-			}
-
-			if !bytes.Equal(want, got) {
-				t.Fatalf("result mismatch: %x != %x", want, got)
+			if !bytes.Equal(got, want) {
+				t.Fatalf("%x != %x", got, want)
 			}
 		})
 	}
