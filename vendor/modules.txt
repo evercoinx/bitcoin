@@ -1,7 +1,7 @@
 # github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
 ## explicit; go 1.12
 github.com/cpuguy83/go-md2man/v2/md2man
-# github.com/evercoinx/kit v0.0.0-20211225142230-d4a3e3bcbbda
+# github.com/evercoinx/kit v0.0.0-20220103162324-549b7934305b
 ## explicit; go 1.17
 github.com/evercoinx/kit/crypto
 github.com/evercoinx/kit/encoding

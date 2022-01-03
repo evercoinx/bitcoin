@@ -10,6 +10,8 @@ var (
 	two = big.NewInt(2)
 )
 
+// GaloisField describes a finite field of integers with an order which is
+// a prime number.
 type GaloisField struct {
 	Order               *big.Int
 	maxElement          *big.Int
@@ -29,7 +31,7 @@ func NewGaloisField(order *big.Int) GaloisField {
 }
 
 // Add returns the sum of modular addition of two or more field elements as
-// (x1+x2+...+xN) % |p| where p is the field order.
+// (x1+x2+...+xN) % p where p is a field order.
 func (f *GaloisField) Add(elems ...*big.Int) *big.Int {
 	f.validateFieldElements(elems)
 
@@ -41,7 +43,7 @@ func (f *GaloisField) Add(elems ...*big.Int) *big.Int {
 }
 
 // Sub returns the difference of modular subtraction of two or more field
-// elements as (x1-x2-...-xN) % |p| where p is the field order.
+// elements as (x1-x2-...-xN) % p where p is a field order.
 func (f *GaloisField) Sub(elems ...*big.Int) *big.Int {
 	f.validateFieldElements(elems)
 
@@ -53,7 +55,7 @@ func (f *GaloisField) Sub(elems ...*big.Int) *big.Int {
 }
 
 // Mul returns the result of modular multiplication of two or more field
-// elements as (x1*x2*...*xN) % |p| where p is the field order.
+// elements as (x1*x2*...*xN) % p where p is a field order.
 func (f *GaloisField) Mul(elems ...*big.Int) *big.Int {
 	f.validateFieldElements(elems)
 
@@ -65,7 +67,7 @@ func (f *GaloisField) Mul(elems ...*big.Int) *big.Int {
 }
 
 // Div returns the quotient of modular division of two or more field elements as
-// (x1/x2/.../xN) % |p| where p is the field order.
+// (x1/x2/.../xN) % p where p is a field order.
 //
 // Division is the inverse of multiplication so that x/y = x*y^-1. According to
 // Fermat's little theorem x^(p-1) % p = 1 the multiplicative inverse of a field
@@ -85,7 +87,7 @@ func (f *GaloisField) Div(elems ...*big.Int) *big.Int {
 }
 
 // Exp returns the result of modular exponentiation of a field element as
-// x^n % |p| where p is the field order.
+// x^n % p where p is a field order.
 //
 // By applying the modulo operation we can force out a negative exponent to be
 // positive reducing it to the range within 0 and p-2. According to Fermat's

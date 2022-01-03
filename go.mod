@@ -3,7 +3,7 @@ module github.com/evercoinx/bitcoin
 go 1.17
 
 require (
-	github.com/evercoinx/kit v0.0.0-20211225142230-d4a3e3bcbbda
+	github.com/evercoinx/kit v0.0.0-20220103162324-549b7934305b
 	github.com/urfave/cli/v2 v2.3.0
 	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871
 )
